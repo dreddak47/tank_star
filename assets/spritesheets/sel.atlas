@@ -1,0 +1,39 @@
+
+sel.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+sel_a
+  rotate: false
+  xy: 2, 2
+  size: 1016, 765
+  orig: 1016, 765
+  offset: 0, 0
+  index: -1
+
+sel2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+sel
+  rotate: false
+  xy: 2, 2
+  size: 1000, 769
+  orig: 1000, 769
+  offset: 0, 0
+  index: -1
+
+sel3.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+sel_a1
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1

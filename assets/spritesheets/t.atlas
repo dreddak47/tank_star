@@ -1,0 +1,130 @@
+
+t.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+t34_a
+  rotate: false
+  xy: 2, 2
+  size: 1019, 750
+  orig: 1019, 750
+  offset: 0, 0
+  index: -1
+
+t2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+froster_a
+  rotate: false
+  xy: 2, 2
+  size: 1016, 750
+  orig: 1016, 750
+  offset: 0, 0
+  index: -1
+
+t3.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+abram
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1
+
+t4.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+abram_a
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1
+
+t5.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buratino
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1
+
+t6.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buratino_a
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1
+
+t7.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+froster
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1
+
+t8.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+m1
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1
+
+t9.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+m1_a
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1
+
+t10.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+t34
+  rotate: false
+  xy: 2, 2
+  size: 1000, 750
+  orig: 1000, 750
+  offset: 0, 0
+  index: -1

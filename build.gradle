@@ -26,6 +26,7 @@ allprojects {
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
+        shapedrawerVersion = '2.5.0'
     }
 
     repositories {
@@ -70,5 +71,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.esotericsoftware.spine:spine-libgdx:3.8.55.1"
         implementation group: 'com.badlogicgames.gdx', name: 'gdx-tools', version:'1.9.7'
+        implementation "space.earlygrey:shapedrawer:$shapedrawerVersion"
     }
 }
