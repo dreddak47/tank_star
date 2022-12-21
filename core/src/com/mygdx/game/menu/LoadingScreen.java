@@ -5,7 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.Arena;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.Tank.Tank;
+import com.mygdx.game.Tank.abram;
+import com.mygdx.game.mainGame.mainGame;
+import com.mygdx.game.player;
 
 public class LoadingScreen implements Screen {
     MyGdxGame game;
@@ -44,7 +49,7 @@ public class LoadingScreen implements Screen {
             }else{
                 game.batch.draw(CTP_ACTIVE, x, -100);
                 if(Gdx.input.isTouched()){
-                    game.setScreen(new Main_menu(game));
+                    game.setScreen(new mainGame(game,new Arena(new player(new abram(0)),new player(new abram(1)))));
                     this.dispose();
                 }
             }

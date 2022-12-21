@@ -53,7 +53,7 @@ public class selectTank implements Screen {
         if(pl1) {
             game.batch.draw(p1, 250, 200);
             player1=new player(t1);
-
+            player1.getT1().setPos(315/100f,250/100f);
 
         }
     }
@@ -62,6 +62,7 @@ public class selectTank implements Screen {
         if(pl2) {
             game.batch.draw(p2, 1100, 200);
             player2=new player(t2);
+            player2.getT1().setPos(800/100f,250/100f);
         }
     }
     public void isSelected(){
@@ -74,12 +75,12 @@ public class selectTank implements Screen {
                     if(player2_selected){
                         selected=false;
                         pl2=true;
-                        t2=new abram();
+                        t2=new abram(1);
                         play_active=true;
                     }else{
                         selected=false;
                         pl1=true;
-                        t1=new abram();
+                        t1=new abram(0);
                         player2_selected=true;
                     }
 

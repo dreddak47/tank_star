@@ -29,5 +29,7 @@ public class player {
 
     }
 
-
+    public Tank getT1() {
+        return t1;
+    }
 }
