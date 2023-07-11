@@ -17,9 +17,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Arena;
-import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.weapons;
+import com.mygdx.game.*;
+import com.mygdx.game.menu.LoadingScreen;
+import com.mygdx.game.menu.Main_menu;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class mainGame implements Screen{
     MyGdxGame game;
@@ -30,7 +35,7 @@ public class mainGame implements Screen{
     // cam
     private OrthographicCamera cam;
     private Viewport port;
-
+    private hud hud;
     //ground
     private TmxMapLoader mapLoader;
     private TiledMap map;
@@ -39,22 +44,33 @@ public class mainGame implements Screen{
     //box2D
     private World world;
     private Box2DDebugRenderer brenderer;
-    Texture c1,c2,fire;
+    Texture c1,c2,fire,pause,pause_screen;
     float pos_cx=1230 ,pos_cy=115;
+    weapons recweap;
 
+    public boolean click(int x1,int x2,int y1,int y2,int k){
+        if(k==0){
+            return (Gdx.input.getX()<x1 || Gdx.input.getX()>x2) || (Gdx.input.getY()<y1 || Gdx.input.getY()>y2);
+        }
+        else{
+            return (Gdx.input.getX()>=x1 && Gdx.input.getX()<=x2) && (Gdx.input.getY()>y1 && Gdx.input.getY()<y2);
+        }
+
+    }
     public World getWorld(){
         return this.world;
     }
      public mainGame(MyGdxGame game, Arena a){
-
+         this.a=a;
         this.game=game;
         cam = new OrthographicCamera();
         port=new FitViewport(MyGdxGame.WIDTH/100f,MyGdxGame.HIEGHT/100f,cam);
-
+        hud=new hud(game.batch,this.a);
         c1=new Texture("big.png");
         c2=new Texture("small.png");
         fire=new Texture("fire.png");
-
+        pause=new Texture("pause.jpg");
+        pause_screen=new Texture("screen.jpg");
         mapLoader=new TmxMapLoader();
         map=mapLoader.load("Finaltile.tmx");
         renderer=new OrthogonalTiledMapRenderer(map,1/100f);
@@ -68,7 +84,7 @@ public class mainGame implements Screen{
          PolygonShape shape = new PolygonShape();
          FixtureDef fdef = new FixtureDef();
          Body body;
-         this.a=a;
+
 
          for(MapObject object: map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
              Rectangle rect =((RectangleMapObject)object).getRectangle();
@@ -83,16 +99,17 @@ public class mainGame implements Screen{
 
              body.createFixture(fdef);
          }
-         a.getP1().getT1().setPos(315/100f,250/100f); // temp
+         //a.getP1().getT1().setPos(315/100f,250/100f); // temp
          a.getP1().getT1().defineTank(this.world);
          a.getP1().getT1().createWeapon();
-         a.getP2().getT1().setPos(1100/100f,250/100f); //temp
+         //a.getP2().getT1().setPos(1100/100f,250/100f); //temp
          a.getP2().getT1().defineTank(this.world);
          a.getP2().getT1().createWeapon();
 
          world.setContactListener(new worldContactListener(this));
-
-
+        setfire=true;
+        collided =false;
+        pause_s=false;
 
 
 
@@ -100,37 +117,93 @@ public class mainGame implements Screen{
 //        t=new Texture("Game.jpg");
 //        pt=new Texture("pause.jpg");
     }
+    float begin;
+    boolean setfire;
+    boolean collided;
+    boolean pause_s;
+
+    public boolean isCollided() {
+        return collided;
+    }
+
     @Override
     public void show() {
 
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float delta){
         world.step(1/60f,6,2);
         handleInput(delta);
         a.getP1().getT1().update(delta);
         a.getP2().getT1().update(delta);
+        hud.update();
+        if(collided || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+            a.changeTurn();
+            setfire=true;
+            world.destroyBody(recweap.body1);
+            collided =false;
+        }
+
         ScreenUtils.clear(0, 0, 0, 1);
+
         //System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());
         renderer.setView(cam);
         renderer.render();
         brenderer.render(world,cam.combined);
         cam.update();
         //game.batch.setProjectionMatrix(cam.combined);
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
 
         game.batch.begin();
+        if(a.TurnTank().getmove()){
+            a.TurnTank().weapon.draw(game.batch);
+
+        }
         game.batch.draw(c1,1200,90);
         game.batch.draw(fire,1100,115);
         cursor();
         fire();
-
+        try {
+            paus();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         a.getP1().getT1().draw(game.batch);
         a.getP2().getT1().draw(game.batch);
         game.batch.end();
 
     }
+    public void paus() throws IOException {
+        game.batch.draw(pause,50,50);
+        if(click(50,150,551,667,1)){
+            if(Gdx.input.justTouched()){
+                pause_s=true;
+                setfire=false;
+            }
+        }
+        if(pause_s){
+            game.batch.draw(pause_screen,500,100);
+            if(click(560,800,85,180,1)){
+                if(Gdx.input.isTouched()){
+                    pause_s=false;
+                    setfire=true;
 
+                }
+            }else if(click(560,800,250,320,1)){
+                if(Gdx.input.isTouched()){
+                    gameSaver gs=new gameSaver();
+                    gs.save(a);
+                    gs.sg();
+                }
+            }else if(click(560,800,407,479,1)){
+                if(Gdx.input.isTouched()){
+                    Gdx.app.exit();
+                }
+            }
+        }
+    }
     public void cursor(){
 
             if (Math.pow(Gdx.input.getX() - 1252, 2) + Math.pow(Gdx.input.getY() - 580, 2) < 2800) {
@@ -148,7 +221,6 @@ public class mainGame implements Screen{
                     angle=(float)Math.atan(((580-Gdx.input.getY())/(Math.abs(Gdx.input.getX() - 1252))));
                 }
 
-
                 if(Gdx.input.justTouched()){
                     if(Gdx.input.getX()<=1252){
                         power=-1*power;
@@ -164,14 +236,23 @@ public class mainGame implements Screen{
     }
 
     public void fire(){
-        if((Gdx.input.getX()<1100||Gdx.input.getX()>1200) && (Gdx.input.getY()<560||Gdx.input.getX()>602)){
-
-        }else{
-            if(Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                a.shoot();
-                a.changeTurn();
+        if(setfire) {
+            if (!(click(1100,1200,560,602,0))){
+                if (Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                    recweap=a.shoot();
+                    setfire=false;
+                }
             }
         }
+    }
+
+    public void detectDestruction(weapons weapon){
+        float x=a.TurnoppTank().getPOS_X();
+        //float y=a.TurnoppTank().getPOS_Y();
+        if(Math.abs(weapon.getPOS_X()-x)<40){
+            a.TurnoppTank().health-=(float)((weapon.getPOS_X()-x)*weapon.getPower()*weapon.destruction/80);
+        }
+
     }
     public void handleInput(float dt){
 
@@ -182,6 +263,9 @@ public class mainGame implements Screen{
             a.TurnTank().move(-0.2f,dt);
         }
     }
+
+
+
     @Override
     public void resize(int width, int height) {
         port.update(width,height);
@@ -207,11 +291,5 @@ public class mainGame implements Screen{
         game.batch.dispose();
     }
 
-    public void detectDestruction(weapons weapon){
-        float x=a.TurnoppTank().getPOS_X();
-        //float y=a.TurnoppTank().getPOS_Y();
-        if(weapon.getPOS_X()-x<40){
-            a.TurnoppTank().health-=(float)((weapon.getPOS_X()-x)*weapon.getPower()*weapon.destruction/80);
-        }
-    }
+
 }

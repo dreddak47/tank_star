@@ -9,8 +9,8 @@ public class buratino extends Tank{
     public buratino(int player) {
         super("buratino",player);
         this.player=player;
-        texture_p1=new Texture("abram.png");
-        texture_p2=new Texture("abram_r.png");
+        texture_p1=new Texture("buratino.png");
+        texture_p2=new Texture("buratino_r.png");
         setTex(player);
     }
 

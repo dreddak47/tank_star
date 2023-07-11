@@ -27,6 +27,5 @@ public class MyGdxGame extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-
 	}
 }

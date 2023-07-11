@@ -26,17 +26,18 @@ public class worldContactListener implements ContactListener {
             }else{
                 game.detectDestruction(weapon);
             }
-
+            game.collided=true;
 
         }else if(fb.getUserData() instanceof weapons){
                 weapon=(weapons) fb.getUserData();
-                if(fb.getUserData() instanceof Tank){
+                if(fa.getUserData() instanceof Tank){
                     Tank tank=(Tank)fa.getUserData();
                     tank.decreaseHealth(weapon);
 
                 }else{
                     game.detectDestruction(weapon);
                 }
+                game.collided=true;
 
 
 

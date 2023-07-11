@@ -4,19 +4,22 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.mainGame.mainGame;
 import com.mygdx.game.weapons;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Tank extends Sprite {
+public class Tank extends Sprite  {
+
     //List<weapons> WpnList=new ArrayList<>();
     float POS_X=0;
     float POS_Y=0;
     public int health;
     float fuel;
     String name;
-    boolean move_w=false;
+    boolean move_w;
     int defensive_shield;
     public weapons weapon;
     public World world;
@@ -24,23 +27,21 @@ public class Tank extends Sprite {
     //private mainGame screen;
     protected Fixture fixture;
     protected Texture te;
-    float m;
+     int m=0;
     protected Tank(String name,int player){
         super(new TextureRegion(new Texture(name+".png")));
-        if(player==0){
-            m=1;
-        }else{
-            m=-1;
-        }
+        this.m=player;
         this.name=name;
         this.health=100;
         this.fuel=100;
+        move_w=false;
 
     }
     public void update(float dt){
         setPosition(body1.getPosition().x*100-getWidth()/2,body1.getPosition().y*100-getHeight()/2);
         if(move_w) {
             weapon.setPos(weapon.body1.getPosition().x, weapon.body1.getPosition().y);
+            weapon.setPosition(weapon.body1.getPosition().x*100-weapon.getWidth()/2,weapon.body1.getPosition().y*100-weapon.getHeight()/2);
         }
     }
     public void defineTank(World world){
@@ -51,7 +52,10 @@ public class Tank extends Sprite {
         bdef.type = BodyDef.BodyType.DynamicBody;
         body1 = world.createBody(bdef);
 
+
         FixtureDef fdef = new FixtureDef();
+        fdef.restitution=0;
+        fdef.friction=1.5f;
         CircleShape shape = new CircleShape();
         shape.setRadius(30/100f);
 
@@ -77,13 +81,17 @@ public class Tank extends Sprite {
 
     }
 
-    public void shoot(){
+    public weapons shoot(){
 
         weapon.visible(this.world);
+
         move_w=true;
         weapon.projectile();
+        return weapon;
     }
-
+    public boolean getmove(){
+        return move_w;
+    }
     public void decreaseHealth(weapons weap){
         this.health-=weap.destruction*weap.getPower();
 
@@ -92,7 +100,11 @@ public class Tank extends Sprite {
     public weapons createWeapon(){
         move_w=false;
         weapon=new weapons();
-        weapon.setPos(body1.getPosition().x+(55/100f)*m,body1.getPosition().y+(40/100f));
+        if(m==0) {
+            weapon.setPos(body1.getPosition().x + (55 / 100f) , body1.getPosition().y + (40 / 100f));
+        }else{
+            weapon.setPos(body1.getPosition().x - (55 / 100f) , body1.getPosition().y + (100 / 100f));
+        }
         return weapon;
     }
 
@@ -121,5 +133,13 @@ public class Tank extends Sprite {
 
     public void setFuel(float fuel){
         this.fuel-=fuel;
+    }
+
+    public float getFuel() {
+        return fuel;
+    }
+
+    public String getName() {
+        return name;
     }
 }

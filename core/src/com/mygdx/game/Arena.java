@@ -3,10 +3,12 @@ package com.mygdx.game;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Tank.Tank;
 
+import java.io.Serializable;
+
 public class Arena {
     private player p1;
     private player p2;
-    int turn;
+    public int turn;
 
     public Arena(player p1,player p2){
         this.p1=p1;
@@ -39,8 +41,9 @@ public class Arena {
         }
     }
 
-    public void shoot(){
-        TurnTank().shoot();
+    public weapons shoot(){
+        weapons weap=TurnTank().shoot();
+        return weap;
     }
 
     public void changeTurn(){
@@ -52,4 +55,6 @@ public class Arena {
             p1.getT1().createWeapon();
         }
     }
+
+
 }

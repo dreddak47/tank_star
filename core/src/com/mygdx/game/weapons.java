@@ -1,10 +1,13 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-public class weapons extends Sprite {
+import java.io.Serializable;
+
+public class weapons extends Sprite  {
     float POS_X;
     float POS_Y;
     float power;
@@ -14,7 +17,9 @@ public class weapons extends Sprite {
     public float destruction;
     public World world;
     public Body body1;
+
     public weapons(){
+        super(new Texture("missile.png"));
         this.power=1;
         this.angle=0;
         destruction=10;
@@ -22,7 +27,7 @@ public class weapons extends Sprite {
     }
 
     public void projectile(){
-        Vector2 startingVelocity=new Vector2(speed*power,speed*power);
+        Vector2 startingVelocity=new Vector2(speed*power,speed*Math.abs(power));
 
         startingVelocity.rotateDeg(angle);
         body1.setLinearVelocity(startingVelocity);
@@ -55,12 +60,13 @@ public class weapons extends Sprite {
     }
 
     public float getPower() {
-        return power;
+        return Math.abs(power);
     }
 
     public void visible(World world){
         this.world=world;
         BodyDef bdef = new BodyDef();
+
         bdef.position.set(POS_X,POS_Y); //POS_X,POS_Y
         bdef.type = BodyDef.BodyType.DynamicBody;
 
@@ -74,6 +80,8 @@ public class weapons extends Sprite {
         fdef.shape = shape;
         fixture =body1.createFixture(fdef);
         fixture.setUserData(this);
+
+        setRegion(getTexture());
 //        CircleShape cs = new CircleShape();
 //        shape.setRadius(10/100f);
 //

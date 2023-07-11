@@ -2,14 +2,17 @@ package com.mygdx.game;
 
 import com.mygdx.game.Tank.Tank;
 
-public class player {
+import java.io.Serializable;
+
+public class player  {
     Tank t1;
 
     public player(Tank t1){
         this.t1=t1;
     }
 
-    public void getState(){
+
+    public void getData(){
 
     }
 

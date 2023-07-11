@@ -11,9 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Arena;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.Tank.Tank;
-import com.mygdx.game.Tank.abram;
-import com.mygdx.game.Tank.froster;
+import com.mygdx.game.Tank.*;
 import com.mygdx.game.mainGame.mainGame;
 import com.mygdx.game.player;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -62,7 +60,7 @@ public class selectTank implements Screen {
         if(pl2) {
             game.batch.draw(p2, 1100, 200);
             player2=new player(t2);
-            player2.getT1().setPos(800/100f,250/100f);
+            player2.getT1().setPos(1100/100f,250/100f);
         }
     }
     public void isSelected(){
@@ -75,12 +73,12 @@ public class selectTank implements Screen {
                     if(player2_selected){
                         selected=false;
                         pl2=true;
-                        t2=new abram(1);
+                        t2=getTank(1);//new abram(1);
                         play_active=true;
                     }else{
                         selected=false;
                         pl1=true;
-                        t1=new abram(0);
+                        t1=getTank(0);//new abram(0);
                         player2_selected=true;
                     }
 
@@ -112,7 +110,27 @@ public class selectTank implements Screen {
             }
         }
     }
-
+    public Tank getTank(int turn){
+        Tank t=new abram(turn);
+        switch(getName(k)) {
+            case "abram":
+                t= new abram(turn);
+                break;
+            case "m1":
+                t=new m1(turn);
+                break;
+            case "t_34":
+                t=new t34(turn);
+                break;
+            case "buratino":
+                t=new buratino(turn);
+                break;
+            case "froster":
+                t= new froster(turn);
+                break;
+        }
+        return t;
+    }
     public void tank(){
         ta_t=new TextureAtlas(Gdx.files.internal("spritesheets/t.atlas"));
         tr_t=ta_t.findRegion(getName(k));
